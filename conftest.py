@@ -7,7 +7,7 @@ from config import SCORECARD_PAGE
 @pytest.fixture()
 def setup_chrome(playwright: Playwright):
     chrome = playwright.chromium
-    browser = chrome.launch(headless=False)
+    browser = chrome.launch(headless=True)
     context = browser.new_context()
     page = context.new_page()
     page.goto(SCORECARD_PAGE)
