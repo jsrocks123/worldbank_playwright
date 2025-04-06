@@ -1,8 +1,5 @@
 import pytest
-from playwright.sync_api import (
-    Locator,
-    expect,
-)
+from playwright.sync_api import Locator, expect
 
 from pages.home_page import HomePage
 from pages.vision_page import VisionPage

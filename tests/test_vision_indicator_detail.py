@@ -2,7 +2,8 @@ from playwright.sync_api import expect
 
 from pages.home_page import HomePage
 from pages.indicator_detail_SI_DST_INEQ_page import IndicatorDetail_SI_DST_INEQ
-from pages.indicator_detail_SI_POV_DDAY_TO_page import IndicatorDetail_SI_POV_DDAY_TO
+from pages.indicator_detail_SI_POV_DDAY_TO_page import \
+    IndicatorDetail_SI_POV_DDAY_TO
 from pages.indicator_detail_SI_POV_PROS_page import IndicatorDetail_SI_POV_PROS
 from pages.vision_page import VisionPage
 from utils.spreadsheets import excel_to_dataframe
