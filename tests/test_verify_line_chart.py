@@ -3,14 +3,19 @@ import pytest
 from playwright.sync_api import Locator, expect
 
 from components.average_income_shortfall_line_chart import AverageIncomeShortfall
-from components.economies_with_hgh_inequality_line_chart import EconomiesWithHighInequality
+from components.economies_with_hgh_inequality_line_chart import (
+    EconomiesWithHighInequality,
+)
 from components.end_extreme_poverty_line_chart import EndExtremePoverty
 from pages.home_page import HomePage
 from pages.vision_page import VisionPage
 from utils.spreadsheets import excel_to_dataframe
 
 
-def get_tooltip_texts_from_line_chart(chart: EndExtremePoverty | AverageIncomeShortfall | EconomiesWithHighInequality, locator: Locator=None):
+def get_tooltip_texts_from_line_chart(
+    chart: EndExtremePoverty | AverageIncomeShortfall | EconomiesWithHighInequality,
+    locator: Locator = None,
+):
     """move mouse across line chart and read dynamic tooltip text"""
     box = locator.bounding_box() if locator else chart.line_tracker.bounding_box()
     viewport_width = chart.page.viewport_size["width"]
@@ -96,12 +101,14 @@ def test_line_chart_si_pov_umic(setup_chrome):
     vision_page.end_extreme_poverty.full_screen.click()
     tooltip_texts_si_pov_umic = get_tooltip_texts_from_line_chart(
         locator=vision_page.end_extreme_poverty.line_tracker_685,
-        chart=vision_page.end_extreme_poverty
+        chart=vision_page.end_extreme_poverty,
     )
     vision_page.end_extreme_poverty.close_chart.click()
     comparison = compare_tooltip_text_with_excel(
         tooltip_texts=tooltip_texts_si_pov_umic,
-        file_path=str(Path(__file__).resolve().parent.parent / "data/SI_POV_DDAY_TO.xlsx"),
+        file_path=str(
+            Path(__file__).resolve().parent.parent / "data/SI_POV_DDAY_TO.xlsx"
+        ),
         indicator_code="SI_POV_UMIC",
     )
 
@@ -129,7 +136,9 @@ def test_line_chart_si_pov_dday(setup_chrome):
     vision_page.end_extreme_poverty.close_chart.click()
     comparison = compare_tooltip_text_with_excel(
         tooltip_texts=tooltip_texts_si_pov_dday,
-        file_path=str(Path(__file__).resolve().parent.parent / "data/SI_POV_DDAY_TO.xlsx"),
+        file_path=str(
+            Path(__file__).resolve().parent.parent / "data/SI_POV_DDAY_TO.xlsx"
+        ),
         indicator_code="SI_POV_DDAY",
     )
 

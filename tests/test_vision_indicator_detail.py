@@ -4,8 +4,7 @@ from playwright.sync_api import expect
 
 from pages.home_page import HomePage
 from pages.indicator_detail_SI_DST_INEQ_page import IndicatorDetail_SI_DST_INEQ
-from pages.indicator_detail_SI_POV_DDAY_TO_page import \
-    IndicatorDetail_SI_POV_DDAY_TO
+from pages.indicator_detail_SI_POV_DDAY_TO_page import IndicatorDetail_SI_POV_DDAY_TO
 from pages.indicator_detail_SI_POV_PROS_page import IndicatorDetail_SI_POV_PROS
 from pages.vision_page import VisionPage
 from utils.spreadsheets import excel_to_dataframe
@@ -54,7 +53,9 @@ def test_verify_vision_indicator_detail_si_pov_dday(setup_chrome):
 
     table_data = indicator_detail_page.get_table_data()
 
-    file_path=str(Path(__file__).resolve().parent.parent / "data/API_SI_POV_DDAY_TO_en_excel.xlsx")
+    file_path = str(
+        Path(__file__).resolve().parent.parent / "data/API_SI_POV_DDAY_TO_en_excel.xlsx"
+    )
     df = excel_to_dataframe(file_path)
 
     if not df.empty:
@@ -106,7 +107,10 @@ def test_verify_vision_indicator_detail_si_pov_pros(setup_chrome):
     table_data = indicator_detail_page.get_table_data()
     compare_table_data_with_excel(
         table_data=table_data,
-        file_path=str(Path(__file__).resolve().parent.parent / "data/API_SI_POV_PROS_en_excel.xlsx"),
+        file_path=str(
+            Path(__file__).resolve().parent.parent
+            / "data/API_SI_POV_PROS_en_excel.xlsx"
+        ),
         indicator_code="SI_POV_PROS",
     )
 
@@ -128,6 +132,9 @@ def test_verify_vision_indicator_detail_si_dst_ineq(setup_chrome):
     table_data = indicator_detail_page.get_table_data()
     compare_table_data_with_excel(
         table_data=table_data,
-        file_path=str(Path(__file__).resolve().parent.parent / "data/API_SI_DST_INEQ_en_excel.xlsx"),
+        file_path=str(
+            Path(__file__).resolve().parent.parent
+            / "data/API_SI_DST_INEQ_en_excel.xlsx"
+        ),
         indicator_code="SI_DST_INEQ",
     )

@@ -6,11 +6,14 @@ from pages.base_page import BasePage
 
 class IndicatorDetail_SI_POV_DDAY_TO(BasePage, BaseTable):
     """indicator detail page"""
+
     def __init__(self, page: Page):
         BasePage.__init__(self, page)
         BaseTable.__init__(self, page)
-        self.title_text = ("Percentage of population living in poverty (at $2.15/day and $6.85/day) | "
-                           "Scorecard - World Bank Group")
+        self.title_text = (
+            "Percentage of population living in poverty (at $2.15/day and $6.85/day) | "
+            "Scorecard - World Bank Group"
+        )
 
     def get_table_data(self):
         """retrieve data from all rows and columns"""
@@ -35,7 +38,9 @@ class IndicatorDetail_SI_POV_DDAY_TO(BasePage, BaseTable):
                 f'{self._selectors.YEAR_COLUMN.replace("##year##", "SI_POV_DDAY_latestYear")}/span'
             ).text_content()
             value_685 = value_row.locator(
-                self._selectors.VALUE_COLUMN.replace("##value##", "SI_POV_UMIC_achievedBaseVal")
+                self._selectors.VALUE_COLUMN.replace(
+                    "##value##", "SI_POV_UMIC_achievedBaseVal"
+                )
             ).text_content()
             table_data[left_column_cell_value] = {year: [value_215, value_685]}
         return table_data
