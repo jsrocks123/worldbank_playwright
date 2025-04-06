@@ -29,14 +29,10 @@ class IndicatorDetail_SI_POV_DDAY_TO(BasePage, BaseTable):
                 )
             ).text_content()
             year = value_row.locator(
-                f"{self._selectors.YEAR_COLUMN.replace(
-                        "##year##", "SI_POV_DDAY_latestYear"
-                    )}/span"
+                f'{self._selectors.YEAR_COLUMN.replace("##year##", "SI_POV_DDAY_latestYear")}/span'
             ).text_content()
             value_685 = value_row.locator(
-                self._selectors.VALUE_COLUMN.replace(
-                    "##value##", "SI_POV_UMIC_achievedBaseVal"
-                )
+                self._selectors.VALUE_COLUMN.replace("##value##", "SI_POV_UMIC_achievedBaseVal")
             ).text_content()
             table_data[left_column_cell_value] = {year: [value_215, value_685]}
         return table_data
