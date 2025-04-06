@@ -29,12 +29,11 @@ jobs:
         uses: snok/install-poetry@v1
       - name: Install dependencies
         run: |
-               python -m pip install --upgrade pip
-               pip install poetry
-               poetry install
-          #          pip install flake8 pytest playwright pandas pytest-playwright openpyxl allure-pytest
-               playwright install
-               if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+          playwright install
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Test with pytest
         run: |
           pytest -v
@@ -77,3 +76,4 @@ jobs:
           allure_report: allure-report
           gh_pages: gh-pages
           allure_history: allure-history
+# pip install flake8 pytest playwright pandas pytest-playwright openpyxl allure-pytest
