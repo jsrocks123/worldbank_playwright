@@ -2,6 +2,7 @@ from playwright.sync_api import Page
 
 
 class BaseTable:
+    """base table component"""
     def __init__(self, page: Page):
         self.page = page
         self._selectors = self._Selectors()
@@ -14,12 +15,14 @@ class BaseTable:
         )
 
     class _Selectors:
+        """selector strings"""
         ROW_ID = "//div[@row-id='##row_id##']"
         LEFT_COLUMN_CELL_TEXT = "//div[@class='text-ellipsis']"
         VALUE_COLUMN = "//div[@col-id='##value##']/span"
         YEAR_COLUMN = "//div[@col-id='##year##']"
 
     def get_table_data(self):
+        """retrieve data from all rows and columns"""
         table_data = {}
         for i in range(self.row_count):
             left_column_cell = self.left_column.locator(

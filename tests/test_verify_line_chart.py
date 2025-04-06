@@ -1,29 +1,34 @@
+from pathlib import Path
 import pytest
 from playwright.sync_api import Locator, expect
 
+from components.average_income_shortfall_line_chart import AverageIncomeShortfall
+from components.economies_with_hgh_inequality_line_chart import EconomiesWithHighInequality
+from components.end_extreme_poverty_line_chart import EndExtremePoverty
 from pages.home_page import HomePage
 from pages.vision_page import VisionPage
 from utils.spreadsheets import excel_to_dataframe
 
 
-def get_tooltip_texts_from_line_chart(locator: Locator, page: VisionPage):
-    box = locator.bounding_box()
-    viewport_width = page.page.viewport_size["width"]
+def get_tooltip_texts_from_line_chart(chart: EndExtremePoverty | AverageIncomeShortfall | EconomiesWithHighInequality, locator: Locator=None):
+    """move mouse across line chart and read dynamic tooltip text"""
+    box = locator.bounding_box() if locator else chart.line_tracker.bounding_box()
+    viewport_width = chart.page.viewport_size["width"]
 
     steps = int(box["width"])
     x = box["x"]  # x-coordinate in top left
     y = box["y"] + (box["height"] / 2)  # y-coordinate in center of bounding box
-    page.page.mouse.move(x, y)
-    page.page.mouse.click(x, y)
+    chart.page.mouse.move(x, y)
+    chart.page.mouse.click(x, y)
 
     tooltip_texts = []
     for i in range(steps + 1):
         x = (
             i / steps
         ) * viewport_width  # Calculate x-coordinate to move from left to right
-        page.page.mouse.move(x, y)  # Keep y-coordinate constant
+        chart.page.mouse.move(x, y)  # Keep y-coordinate constant
         if x >= box["x"]:
-            tooltip = page.line_chart_tooltip
+            tooltip = chart.line_chart_tooltip
             tooltip_text = tooltip.inner_text()
             if tooltip_text not in tooltip_texts:
                 tooltip_texts.append(tooltip_text)
@@ -47,7 +52,7 @@ def compare_tooltip_text_with_excel(
         if entry
     ]
 
-    df = excel_to_dataframe(file_path, orient="list")
+    df = excel_to_dataframe(file_path)
     comparison = []
     if not df.empty:
         si_pov_umic_df = df.loc[
@@ -76,6 +81,7 @@ def compare_tooltip_text_with_excel(
 
 
 def test_line_chart_si_pov_umic(setup_chrome):
+    """verify line chart data with excel"""
     page = setup_chrome
     home_page = HomePage(page)
     home_page.vision_tab.click()
@@ -87,15 +93,15 @@ def test_line_chart_si_pov_umic(setup_chrome):
     expect(vision_page.end_extreme_poverty.line_chart_button).to_be_visible()
 
     # orange line chart
-    vision_page.end_extreme_poverty.line_chart_full_screen.click()
+    vision_page.end_extreme_poverty.full_screen.click()
     tooltip_texts_si_pov_umic = get_tooltip_texts_from_line_chart(
         locator=vision_page.end_extreme_poverty.line_tracker_685,
-        page=vision_page,
+        chart=vision_page.end_extreme_poverty
     )
-    vision_page.end_extreme_poverty.line_chart_close.click()
+    vision_page.end_extreme_poverty.close_chart.click()
     comparison = compare_tooltip_text_with_excel(
         tooltip_texts=tooltip_texts_si_pov_umic,
-        file_path="../data/SI_POV_DDAY_TO.xlsx",
+        file_path=str(Path(__file__).resolve().parent.parent / "data/SI_POV_DDAY_TO.xlsx"),
         indicator_code="SI_POV_UMIC",
     )
 
@@ -103,6 +109,7 @@ def test_line_chart_si_pov_umic(setup_chrome):
 
 
 def test_line_chart_si_pov_dday(setup_chrome):
+    """verify line chart data with excel"""
     page = setup_chrome
     home_page = HomePage(page)
     home_page.vision_tab.click()
@@ -114,15 +121,15 @@ def test_line_chart_si_pov_dday(setup_chrome):
     expect(vision_page.end_extreme_poverty.line_chart_button).to_be_visible()
 
     # blue line chart
-    vision_page.end_extreme_poverty.line_chart_full_screen.click()
+    vision_page.end_extreme_poverty.full_screen.click()
     tooltip_texts_si_pov_dday = get_tooltip_texts_from_line_chart(
         locator=vision_page.end_extreme_poverty.line_tracker_215,
-        page=vision_page,
+        chart=vision_page.end_extreme_poverty,
     )
-    vision_page.end_extreme_poverty.line_chart_close.click()
+    vision_page.end_extreme_poverty.close_chart.click()
     comparison = compare_tooltip_text_with_excel(
         tooltip_texts=tooltip_texts_si_pov_dday,
-        file_path="../data/SI_POV_DDAY_TO.xlsx",
+        file_path=str(Path(__file__).resolve().parent.parent / "data/SI_POV_DDAY_TO.xlsx"),
         indicator_code="SI_POV_DDAY",
     )
 
@@ -130,26 +137,26 @@ def test_line_chart_si_pov_dday(setup_chrome):
 
 
 def test_line_chart_average_income_shortfall(setup_chrome):
+    """verify line chart data with excel"""
     page = setup_chrome
     home_page = HomePage(page)
     home_page.vision_tab.click()
 
     vision_page = VisionPage(page)
     expect(page).to_have_title(vision_page.title_text)
-    expect(vision_page.average_income_shortfall_body).to_be_visible()
-    vision_page.average_income_shortfall_body.scroll_into_view_if_needed()
-    expect(vision_page.average_income_shortfall_line_chart_button).to_be_visible()
+    expect(vision_page.average_income_shortfall.body).to_be_visible()
+    vision_page.average_income_shortfall.body.scroll_into_view_if_needed()
+    expect(vision_page.average_income_shortfall.line_chart_button).to_be_visible()
 
     # line chart
-    vision_page.average_income_shortfall_line_chart_full_screen.click()
+    vision_page.average_income_shortfall.full_screen.click()
     tooltip_texts_si_pov_pros = get_tooltip_texts_from_line_chart(
-        locator=vision_page.average_income_shortfall_line_tracker,
-        page=vision_page,
+        chart=vision_page.average_income_shortfall,
     )
-    vision_page.average_income_shortfall_line_chart_close.click()
+    vision_page.average_income_shortfall.close_chart.click()
     comparison = compare_tooltip_text_with_excel(
         tooltip_texts=tooltip_texts_si_pov_pros,
-        file_path="../data/SI_POV_PROS.xlsx",
+        file_path=str(Path(__file__).resolve().parent.parent / "data/SI_POV_PROS.xlsx"),
         indicator_code="SI_POV_PROS",
     )
 
@@ -157,26 +164,26 @@ def test_line_chart_average_income_shortfall(setup_chrome):
 
 
 def test_line_chart_economies_with_high_inequality(setup_chrome):
+    """verify line chart data with excel"""
     page = setup_chrome
     home_page = HomePage(page)
     home_page.vision_tab.click()
 
     vision_page = VisionPage(page)
     expect(page).to_have_title(vision_page.title_text)
-    expect(vision_page.economies_with_high_inequality_body).to_be_visible()
-    vision_page.economies_with_high_inequality_body.scroll_into_view_if_needed()
-    vision_page.economies_with_high_inequality_line_chart_button.click()
+    expect(vision_page.economies_with_high_inequality.body).to_be_visible()
+    vision_page.economies_with_high_inequality.body.scroll_into_view_if_needed()
+    vision_page.economies_with_high_inequality.line_chart_button.click()
 
     # line chart
-    vision_page.economies_with_high_inequality_line_chart_full_screen.click()
+    vision_page.economies_with_high_inequality.full_screen.click()
     tooltip_texts_si_dst_ineq = get_tooltip_texts_from_line_chart(
-        locator=vision_page.economies_with_high_inequality_line_tracker,
-        page=vision_page,
+        chart=vision_page.economies_with_high_inequality
     )
-    vision_page.economies_with_high_inequality_line_chart_close.click()
+    vision_page.economies_with_high_inequality.close_chart.click()
     comparison = compare_tooltip_text_with_excel(
         tooltip_texts=tooltip_texts_si_dst_ineq,
-        file_path="../data/SI_DST_INEQ.xlsx",
+        file_path=str(Path(__file__).resolve().parent.parent / "data/SI_DST_INEQ.xlsx"),
         indicator_code="SI_DST_INEQ",
     )
 

@@ -5,6 +5,7 @@ from pages.base_page import BasePage
 
 
 class IndicatorDetail_SI_POV_DDAY_TO(BasePage, BaseTable):
+    """indicator detail page"""
     def __init__(self, page: Page):
         BasePage.__init__(self, page)
         BaseTable.__init__(self, page)
@@ -12,6 +13,7 @@ class IndicatorDetail_SI_POV_DDAY_TO(BasePage, BaseTable):
                            "Scorecard - World Bank Group")
 
     def get_table_data(self):
+        """retrieve data from all rows and columns"""
         table_data = {}
         for i in range(self.row_count):
             left_column_cell = self.left_column.locator(

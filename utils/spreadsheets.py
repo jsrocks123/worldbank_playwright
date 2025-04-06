@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import DataFrame
 
 
-def excel_to_dataframe(file_path, sheet_name=0, orient="dict") -> DataFrame | None:
+def excel_to_dataframe(file_path, sheet_name=0) -> DataFrame | None:
     """
     Converts an Excel sheet to a dataframe.
 
