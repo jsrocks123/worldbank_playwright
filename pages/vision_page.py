@@ -1,4 +1,4 @@
-from playwright.sync_api import Locator, Page
+from playwright.sync_api import Page
 
 from components.base_chart import BaseChart
 from components.end_extreme_poverty_line_chart import EndExtremePoverty

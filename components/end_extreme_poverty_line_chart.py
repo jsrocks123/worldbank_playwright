@@ -23,6 +23,7 @@ class EndExtremePoverty(BaseChart):
             self.body.locator("..").locator("..").locator(self.line_tracker)
         )
         self.line_tracker_685 = page.locator(
-            "//*[local-name()='g' and contains(@class,'highcharts-series-1')]//*[name()='path' and @class='highcharts-tracker-line']"
+            "//*[local-name()='g' and contains(@class,'highcharts-series-1')]"
+            "//*[name()='path' and @class='highcharts-tracker-line']"
         )
         self.more_data = page.locator("//a[contains(@href,'SI_POV_DDAY_TO')]")

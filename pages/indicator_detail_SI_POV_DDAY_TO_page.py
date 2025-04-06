@@ -8,7 +8,8 @@ class IndicatorDetail_SI_POV_DDAY_TO(BasePage, BaseTable):
     def __init__(self, page: Page):
         BasePage.__init__(self, page)
         BaseTable.__init__(self, page)
-        self.title_text = "Percentage of population living in poverty (at $2.15/day and $6.85/day) | Scorecard - World Bank Group"
+        self.title_text = ("Percentage of population living in poverty (at $2.15/day and $6.85/day) | "
+                           "Scorecard - World Bank Group")
 
     def get_table_data(self):
         table_data = {}
