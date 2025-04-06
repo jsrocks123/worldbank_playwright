@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "worldbank-playwright"
+version = "0.1.0"
+authors = ["Jval Shah <jval.n.shah@gmail.com>"]
+description = "demo project to show various concepts in Playwright"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pytest = "^8.3.5"
+pytest-playwright = "^0.4.3"
+playwright = "^1.39.0"
+openpyxl = "^3.1.5"
+black = "^25.1.0"
+isort = "^6.0.1"
+pylint = "^3.3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
