@@ -34,6 +34,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry
           poetry install
+          pip install pytest playwright
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Install Playwright Browsers
