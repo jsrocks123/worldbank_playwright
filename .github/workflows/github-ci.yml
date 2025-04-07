@@ -8,6 +8,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -56,47 +57,27 @@ jobs:
           path: test-results/
           retention-days: 7
 
-      - name: Link Playwright Traces And Videos To Allure Report
-        working-directory: allure-results
-        if: failure()
-        run: echo ARTIFACT_URL=${{ steps.artifact-upload-step.outputs.artifact-url }} >> environment.properties
-
-      - name: Link Git Information And Browser Version To Allure Report
-        working-directory: allure-results
+      - name: Get Allure history
+        uses: actions/checkout@v4
         if: always()
-        run: |
-          {
-           echo BUILD_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-           echo GIT_BRANCH=${{ github.head_ref || github.ref_name }}
-           echo GIT_COMMIT_ID=${{ github.sha }}
-           echo GIT_COMMIT_MESSAGE=$(git show -s --format=%s HEAD)
-           echo GIT_COMMIT_AUTHOR_NAME=$(git show -s --format='%ae' HEAD)
-           echo GIT_COMMIT_TIME=$(git show -s --format=%ci HEAD)
-           echo CHROME_VERSION=$(google-chrome --product-version)
-          } >> environment.properties
+        continue-on-error: true
+        with:
+          ref: main
+          path: gh-pages
 
       - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
         if: always()
         id: allure-report
         with:
-          allure_results: allure-results
-          allure_report: allure-report
           gh_pages: gh-pages
           allure_history: allure-history
+          allure_results: allure-results
 
-      #playwright install
-      # pip install flake8 pytest playwright pandas pytest-playwright openpyxl allure-pytest
-
-      #      - name: Install dependencies
-      #        run: |
-      #          python -m pip install --upgrade pip
-      #          pip install poetry
-      #          poetry install
-      #          pip install pytest playwright
-      #          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-#      - name: Install Playwright Browsers
-#        run: |
-#          PLAYWRIGHT_VERSION=$(grep -E '^playwright = "[^"]*"' pyproject.toml | sed -E 's/playwright = "([^"]*)".*$/\1/')
-#          npx playwright@$PLAYWRIGHT_VERSION install --with-deps
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        env:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: main
+          publish_dir: allure-history
