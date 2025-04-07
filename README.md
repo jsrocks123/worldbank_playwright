@@ -108,8 +108,6 @@ allure serve allure-results
    includes network requests, JavaScript execution, and browser interactions. You can click on individual events for
    more details.
 
-- ...
-
 ## Features
 
 worldbank-playwright currently has the following set of features:
