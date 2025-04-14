@@ -1,4 +1,4 @@
-# worldbank-playwright
+# playwright-python-example
 
 ![version](https://img.shields.io/badge/version-0.1.0-blue)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
@@ -35,7 +35,7 @@ Demo for WorldBank to show various Playwright concepts using Python
 
 ```bash
 git clone https://github.com/jsrocks123/worldbank_playwright
-cd worldbank-playwright
+cd playwright-python-example
 ```
 
 ### Install project dependencies
@@ -51,7 +51,7 @@ $ poetry install
 On Windows:
 
 ```sh
-PS> python -m pip install worldbank-playwright
+PS> python -m pip install playwright-python-example
 ```
 
 ### Install playwright
@@ -62,7 +62,7 @@ playwright install
 
 ## 🏃‍♂️ Execution / Usage
 
-To run worldbank-playwright, fire up a terminal window and run the following command:
+To run playwright-python-example, fire up a terminal window and run the following command:
 
 ```sh
 $ pytest -v
@@ -112,7 +112,7 @@ allure serve allure-results
 
 ## Features
 
-worldbank-playwright currently has the following set of features:
+playwright-python-example currently has the following set of features:
 
 - Read data from line charts using web scraping
 - Read data from table using web scraping
